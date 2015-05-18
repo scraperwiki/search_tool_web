@@ -63,15 +63,18 @@ $(function() {
         smartAlert("An error occurred", execOutput)
         return
       }
-      var datasetUrl = "/dataset/" + scraperwiki.box
-      scraperwiki.tool.redirect(datasetUrl)
+      // TODO: readd redirect for now
+      //var datasetUrl = "/dataset/" + scraperwiki.box
+      //scraperwiki.tool.redirect(datasetUrl)
     }
     $('#search-go').on('click', function() {
       $(this).addClass('loading').html('Fetching…')
       saveSettings(function() {
-        scraperwiki.exec("tool/run_bing_search.py", execSuccess)
+        //TODO: readd
+        //scraperwiki.exec("tool/run_bing_search.py", execSuccess)
         var q = $('#search-terms').val()
-        scraperwiki.dataset.name("Bing search results for " + name_from_url(q))
+        //TODO: readd
+        //scraperwiki.dataset.name("Bing search results for " + name_from_url(q))
       })
     })
 
