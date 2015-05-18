@@ -22,12 +22,10 @@ function saveSettings(callback) {
     var $element = $(element)
     toSave[element.id] = $element.val().split(",")
   });
-  var saveString = JSON.stringify(toSave, null, 4)
-  var escapedString = scraperwiki.shellEscape(saveString)
-  scraperwiki.exec(
-    "printf > allSettings.json '%s' " + escapedString
-    , callback)
+  localStorage.setItem('search-tool-web_'+window.location.pathname, JSON.stringify(toSave, null, 4))
+  callback()
 }
+
 // :todo(drj): this function is pretty generic and should be
 // in scraperwiki.js
 function loadSettings(callback) {
@@ -36,23 +34,21 @@ function loadSettings(callback) {
   var populateElements = function() {
     $('.sw-persist').each(function(i, element) {
       var $element = $(element)
-      $element.val(window.allSettings[element.id])
+      $element.val(swSettings[element.id])
     });
   }
 
-  scraperwiki.tool.exec('touch allSettings.json; cat allSettings.json',
-    function(content) {
-      window.allSettings = {}
-      if(content) {
-        try {
-          window.allSettings = JSON.parse(content)
+  var swSettings = {}
+  content = localStorage.getItem('search-tool-web_'+window.location.pathname)
+  if(content) {
+    try {
+      swSettings = JSON.parse(content)
         } catch(e) {
-          smartAlert("Failed to parse settings file",
-            String(e), "\n\n" + content)
+      smartAlert("Failed to parse settings.",
+        String(e), "\n\n" + content)
         }
       }
-      populateElements()
-    })
+  populateElements()
 }
 
 $(function() {
