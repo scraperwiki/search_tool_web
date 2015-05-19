@@ -51,6 +51,35 @@ function loadSettings(callback) {
   populateElements()
 }
 
+var do_search = function(query) {
+  var options;
+  options = {
+    url: window.location.href + 'search',
+    data: { q: query, },
+    type: "GET"
+  };
+  return $.ajax(options);
+};
+
+// From datatables-view-tool.
+var handle_ajax_error = function(jqXHR, textStatus, errorThrown) {
+  $('#content > .dataTables_processing').remove()
+  if (jqXHR.responseText.match(/database file does not exist/) != null) {
+    $('#table-sidebar-loading').text('No tables')
+    $('#content').html('<div class="problem"><h4>This dataset is empty.</h4>' +
+                       '<p>Once your dataset contains data,<br/>' +
+                       'it will show up in a table here.</p></div>')
+
+  } else if (jqXHR.responseText.match(/Gateway Time-out/) != null) {
+    $('#content').html('<div class="problem"><h4>Well this is embarassing.</h4>' +
+                       '<p>Your dataset is too big to display.</br>' +
+                       'Try downloading it as a spreadsheet.</p></div>')
+
+  } else {
+    scraperwiki.alert(errorThrown, jqXHR.responseText, "error")
+  }
+}
+
 $(function() {
     loadSettings()
 
@@ -63,6 +92,7 @@ $(function() {
         smartAlert("An error occurred", execOutput)
         return
       }
+      $('#search-go').removeClass('loading').html('Get Results');
       // TODO: readd redirect for now
       //var datasetUrl = "/dataset/" + scraperwiki.box
       //scraperwiki.tool.redirect(datasetUrl)
@@ -73,7 +103,10 @@ $(function() {
         //TODO: readd
         //scraperwiki.exec("tool/run_bing_search.py", execSuccess)
         var q = $('#search-terms').val()
-        //TODO: readd
+        do_search(q).done(execSuccess).fail(function(jqXHR, textStatus, errorThrown) {
+          handle_ajax_error(jqXHR, textStatus, errorThrown)
+        });
+        //TODO: add naming, but not sure how to go about this.
         //scraperwiki.dataset.name("Bing search results for " + name_from_url(q))
       })
     })
