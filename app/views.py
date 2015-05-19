@@ -5,6 +5,7 @@ from __future__ import (unicode_literals, division,
 
 from flask import request
 from app import app
+from app import run_bing_search
 
 
 @app.route('/')
@@ -14,5 +15,6 @@ def index():
 
 @app.route('/search')
 def search():
-    # query = request.args.get('q')
+    query = ['search-tool-web', request.args.get('q')]
+    run_bing_search.main(query)
     return '', 204
