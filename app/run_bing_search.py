@@ -54,7 +54,8 @@ def main(argv=None):
         argv = sys.argv
     bing_api_key = get_bing_api_key_from_env()
     query_terms = get_query_terms(argv)
-    run_search(query_terms, bing_api_key)
+    with scraperwiki.sql.Transaction():
+        run_search(query_terms, bing_api_key)
 
 
 if __name__ == '__main__':
