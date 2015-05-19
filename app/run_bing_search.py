@@ -23,18 +23,10 @@ def get_bing_api_key_from_env():
 
 
 def get_query_terms(argv):
-    """ Return list of query terms from args or JSON list in allSettings.json.
-
-    In the web UI, terms are comma separated on entry; on the command line,
-    space separated - quote them if you want spaces."""
-    if argv is None:
-        argv = sys.argv
+    """ Return list of query terms from args. """
     arg = argv[1:]
     if len(arg) > 0:
         query_terms = arg
-    else:
-        with open(os.path.expanduser("~/allSettings.json")) as settings:
-            query_terms = json.load(settings)['search-terms']
     return [term.strip() for term in query_terms]
 
 
@@ -58,6 +50,8 @@ def run_search(query_terms, bing_api_key):
 
 def main(argv=None):
     """ Run Bing search for terms entered via command line or JSON. """
+    if argv is None:
+        argv = sys.argv
     bing_api_key = get_bing_api_key_from_env()
     query_terms = get_query_terms(argv)
     run_search(query_terms, bing_api_key)
