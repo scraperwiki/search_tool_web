@@ -58,9 +58,4 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-    # TODO remove this hack; needed as execution stops on platform
-    # due to warning. Microsoft certificate doesn't provide subjectAltName.
-    # See https://github.com/shazow/urllib3/issues/497
-    import requests.packages.urllib3
-    requests.packages.urllib3.disable_warnings()
     main()
