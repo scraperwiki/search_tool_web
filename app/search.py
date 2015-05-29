@@ -3,18 +3,20 @@
 from __future__ import (unicode_literals, division,
                         print_function, absolute_import)
 
-from flask import request
-from app import app
+from flask import request, Blueprint
 from app import run_bing_search
 
+search = Blueprint('search', __name__, static_folder='static',
+                   static_url_path='/static/search')
 
-@app.route('/')
+
+@search.route('/')
 def index():
-    return app.send_static_file('search_tool_index.html')
+    return search.send_static_file('search_tool_index.html')
 
 
-@app.route('/search')
-def search():
+@search.route('/search')
+def do_search():
     query = ['search-tool-web', request.args.get('q')]
     run_bing_search.main(query)
     return '', 204
