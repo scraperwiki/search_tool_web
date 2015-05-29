@@ -116,8 +116,6 @@ $(function() {
     $('#search-go').on('click', function() {
       $(this).addClass('loading').html('Fetching…')
       saveSettings(function() {
-        //TODO: readd
-        //scraperwiki.exec("tool/run_bing_search.py", execSuccess)
         var q = $('#search-terms').val()
         do_search(q).done(execSuccess).fail(function(jqXHR, textStatus, errorThrown) {
           handle_ajax_error(jqXHR, textStatus, errorThrown)
