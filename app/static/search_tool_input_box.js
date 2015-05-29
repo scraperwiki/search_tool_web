@@ -84,7 +84,7 @@ var handle_ajax_error = function(jqXHR, textStatus, errorThrown) {
 var redirectToDatatables = function() {
     // datatables-web may not be present; find the URL it would have if
     // present, and then check if it's available.
-    var tableUrl = window.location.protocol + '//' + window.location.host + '/table';
+    var tableUrl = '../datatables';
 
     var options;
     options = {
