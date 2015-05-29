@@ -80,9 +80,27 @@ var handle_ajax_error = function(jqXHR, textStatus, errorThrown) {
   }
 }
 
+
+var redirectToDatatables = function() {
+    // datatables-web may not be present; find the URL it would have if
+    // present, and then check if it's available.
+    var tableUrl = window.location.protocol + '//' + window.location.host + '/table';
+
+    var options;
+    options = {
+        url: tableUrl,
+        type: "GET"
+    };
+
+    $.ajax(options).done(function() {
+        window.location.href = tableUrl;
+    }).fail(function() {
+        smartAlert("No datatables tool found; can't redirect to show you the results.");
+    })
+  };
+
 $(function() {
     loadSettings()
-
     // Setup the "submit" button.
     // :todo(drj): make generic and put in scraperwiki.js
     var execSuccess = function(execOutput) {
@@ -93,9 +111,7 @@ $(function() {
         return
       }
       $('#search-go').removeClass('loading').html('Get Results');
-      // TODO: readd redirect for now
-      //var datasetUrl = "/dataset/" + scraperwiki.box
-      //scraperwiki.tool.redirect(datasetUrl)
+      redirectToDatatables();
     }
     $('#search-go').on('click', function() {
       $(this).addClass('loading').html('Fetching…')
