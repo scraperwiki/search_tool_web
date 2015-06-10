@@ -54,7 +54,7 @@ function loadSettings(callback) {
 var do_search = function(query) {
   var options;
   options = {
-    url: window.location.href + 'search',
+    url: window.location.href + 'do_search',
     data: { q: query, },
     type: "GET"
   };

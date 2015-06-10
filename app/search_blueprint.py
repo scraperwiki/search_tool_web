@@ -15,7 +15,7 @@ def index():
     return search.send_static_file('search_tool_index.html')
 
 
-@search.route('/search')
+@search.route('/do_search')
 def do_search():
     query = ['search-tool-web', request.args.get('q')]
     run_bing_search.main(query)
